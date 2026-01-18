@@ -1,0 +1,25 @@
+package com.diegoginko.spaceflightnews.domain.model
+
+data class Article(
+    val id: Int,
+    val title: String,
+    val url: String,
+    val imageUrl: String?,
+    val newsSite: String,
+    val summary: String?,
+    val publishedAt: String,
+    val updatedAt: String?,
+    val featured: Boolean,
+    val launches: List<Launch>,
+    val events: List<Event>
+)
+
+data class Launch(
+    val id: String,
+    val provider: String
+)
+
+data class Event(
+    val id: Int,
+    val provider: String
+)
