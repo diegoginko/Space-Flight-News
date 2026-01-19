@@ -1,6 +1,7 @@
 package com.diegoginko.spaceflightnews.data.di
 
-import com.diegoginko.spaceflightnews.data.remote.ApiService
+import com.diegoginko.spaceflightnews.data.remote.SFNApiService
+import com.diegoginko.spaceflightnews.data.remote.LaunchLibraryApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -46,6 +48,7 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    @Named("SpaceFlightNews")
     fun provideRetrofitInstance(
         okHttpClient: OkHttpClient,
         json: Json
@@ -60,8 +63,33 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(
+        @Named("SpaceFlightNews") retrofit: Retrofit
+    ): SFNApiService {
+        return retrofit.create(SFNApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("LaunchLibrary")
+    fun provideLaunchLibraryRetrofitInstance(
+        okHttpClient: OkHttpClient,
+        json: Json
+    ): Retrofit {
+        val contentType = "application/json".toMediaType()
+        return Retrofit.Builder()
+            .baseUrl("https://ll.thespacedevs.com/2.2.0/")
+            .client(okHttpClient)
+            .addConverterFactory(json.asConverterFactory(contentType))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLaunchLibraryApiService(
+        @Named("LaunchLibrary") retrofit: Retrofit
+    ): LaunchLibraryApiService {
+        return retrofit.create(LaunchLibraryApiService::class.java)
     }
 
 }

@@ -2,6 +2,8 @@ package com.diegoginko.spaceflightnews.domain.repository
 
 import com.diegoginko.spaceflightnews.domain.model.Article
 import com.diegoginko.spaceflightnews.domain.model.Blog
+import com.diegoginko.spaceflightnews.domain.model.EventDetail
+import com.diegoginko.spaceflightnews.domain.model.LaunchDetail
 import com.diegoginko.spaceflightnews.domain.model.PaginatedResult
 import com.diegoginko.spaceflightnews.domain.model.Report
 
@@ -72,4 +74,18 @@ interface SFNRepository {
      * @return Reporte
      */
     suspend fun getReportById(id: Int): Result<Report>
+    
+    /**
+     * Obtiene detalles completos de un lanzamiento por ID
+     * @param id ID del lanzamiento (UUID string)
+     * @return Detalles del lanzamiento
+     */
+    suspend fun getLaunchById(id: String): Result<LaunchDetail>
+    
+    /**
+     * Obtiene detalles completos de un evento por ID
+     * @param id ID del evento
+     * @return Detalles del evento
+     */
+    suspend fun getEventById(id: Int): Result<EventDetail>
 }

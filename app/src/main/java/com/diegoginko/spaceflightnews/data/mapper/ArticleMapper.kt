@@ -5,16 +5,19 @@ import com.diegoginko.spaceflightnews.data.remote.model.BlogDto
 import com.diegoginko.spaceflightnews.data.remote.model.PaginatedResponse
 import com.diegoginko.spaceflightnews.data.remote.model.ReportDto
 import com.diegoginko.spaceflightnews.domain.model.Article
+import com.diegoginko.spaceflightnews.domain.model.Author
 import com.diegoginko.spaceflightnews.domain.model.Blog
 import com.diegoginko.spaceflightnews.domain.model.Event
 import com.diegoginko.spaceflightnews.domain.model.Launch
 import com.diegoginko.spaceflightnews.domain.model.PaginatedResult
 import com.diegoginko.spaceflightnews.domain.model.Report
+import com.diegoginko.spaceflightnews.domain.model.Socials
 
 fun ArticleDto.toDomain(): Article {
     return Article(
         id = id,
         title = title,
+        authors = authors.map { it.toDomain() },
         url = url,
         imageUrl = imageUrl,
         newsSite = newsSite,
@@ -27,16 +30,34 @@ fun ArticleDto.toDomain(): Article {
     )
 }
 
+fun com.diegoginko.spaceflightnews.data.remote.model.AuthorDto.toDomain(): Author {
+    return Author(
+        name = name,
+        socials = socials?.toDomain()
+    )
+}
+
+fun com.diegoginko.spaceflightnews.data.remote.model.SocialsDto.toDomain(): Socials {
+    return Socials(
+        x = x,
+        youtube = youtube,
+        instagram = instagram,
+        linkedin = linkedin,
+        mastodon = mastodon,
+        bluesky = bluesky
+    )
+}
+
 fun com.diegoginko.spaceflightnews.data.remote.model.LaunchDto.toDomain(): Launch {
     return Launch(
-        id = id,
+        id = launchId,
         provider = provider
     )
 }
 
 fun com.diegoginko.spaceflightnews.data.remote.model.EventDto.toDomain(): Event {
     return Event(
-        id = id,
+        id = eventId,
         provider = provider
     )
 }
